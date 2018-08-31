@@ -1,0 +1,100 @@
+<div class="row">
+    <div class="col-sm-12">
+        <app-card  [blockClass]="'icon-btn'">
+            
+         
+            <div class="table-responsive">
+                <table class="table table-striped" style="margin-top: 15px">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th width="300px">รายการ</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let line of result; let i = index">
+                            <td>{{i+1}}</td>
+                            <td>{{ line.name }} </td>
+                            <td align="center">
+                                <button mat-icon-button [matMenuTriggerFor]="menu">
+                                    <mat-icon>more_vert</mat-icon>
+                                </button>
+                                <mat-menu #menu="matMenu">
+                                    <button mat-menu-item (click)="editModal(editLine, line)">
+                                    <mat-icon>create</mat-icon>
+                                    <span>แก้ไข</span>
+                                </button>
+                   
+                                <button mat-menu-item (click)="del(line._id)">
+                                    <mat-icon>delete</mat-icon>
+                                    <span>ลบ</span>
+                                </button>
+                                </mat-menu>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+        </app-card>
+
+        <button mat-fab color="primary" class="app-fab--absolute" (click)="openModal(template)"><i class="icofont icofont-ui-edit"></i></button>
+
+        <!-- modal insert -->
+        <ng-template #template>
+            <div class="modal-header">
+                <h4 class="modal-title pull-left">เพิ่มรายการ</h4>
+                <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form [formGroup]="form" name="form" (ngSubmit)="onInsert()">
+                
+                <div class="modal-body">
+                    <div class="form-group row" [ngClass]="displayFieldCss('name')">
+                        <label class="col-sm-2 col-form-label">ชื่อรายการ</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" formControlName="name" id="name" required />
+                            <app-field-error-display [displayError]="isFieldValid('name')" errorMsg="Please inform your name">
+                                </app-field-error-display>
+                        </div>                        
+                    </div>
+                    
+                  
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default waves-effect" (click)="modalRef.hide()">ยกเลิก</button>
+                    <button type="submit" [disabled]="!form.valid" class="btn btn-primary waves-effect waves-light">บันทึก</button>
+                </div>
+            </form>
+        </ng-template>
+
+        <!-- modal edit-->
+        <ng-template #editLine>
+            <div class="modal-header">
+                <h4 class="modal-title pull-left">แก้ไขรายการ</h4>
+                <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form name="form" (ngSubmit)="onEdit()">
+                <div class="modal-body">
+
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">ชื่อรายการ</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" [(ngModel)]="model.name" name="name">
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                        <button type="button" class="btn btn-default waves-effect" (click)="modalRef.hide()">ยกเลิก</button>
+                        <button type="submit" class="btn btn-primary waves-effect waves-light">บันทึก</button>
+                </div>
+            </form>
+        </ng-template>
+
+    </div>
+</div>

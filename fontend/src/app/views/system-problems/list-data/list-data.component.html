@@ -1,0 +1,140 @@
+<div class="row">
+    <div class="col-sm-12">
+        <app-card [title]="'รายการแจ้งปัญหา System Problems'" [headerContent]="'รายงานแจ้งปัญหาเกี่ยวกับระบบที่เกิดขึ้น ส่งผลกระทบในการทำงาน เพื่อบันทึกข้อมูลและแสดงรายการทั้งหมด'"  [blockClass]="'icon-btn'">
+            <div class="table-responsive">
+                <table class="table table-styling">
+                  <thead class="table-info">
+                  <tr>
+                    <th>#</th>
+                    <th style="width: auto" (click)="sort('subject')">
+                        รายการที่แจ้ง
+                    </th>
+                    <th style="width: auto">ชื่อผู้แจ้ง</th>
+                    <th style="width: auto">เรื่อง</th>
+                    <th style="width: auto">รายละเอียด</th>
+                    <th style="width: auto">วันที่เกิดเหตุการณ์</th>
+                    <th style="width: auto">บันทึกการแก้ไข</th>
+                    <th style="width: auto"> &nbsp; </th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr *ngFor="let line of pagedItems; let i = index">
+                    <td scope="row">{{ i+1 }}</td>
+                    <td>{{ line.items.name }}</td>
+                    <td *ngFor="let user of line.users">{{ user.firstname }} {{ user.lastname }}</td>
+                    <td>{{ line.subject }}</td>
+                    <td>{{ line.description }}</td>
+                    <td>{{ line.date | date: 'dd/MM/yyyy hh:mm:ss' }}</td>
+                    <td>{{ line.edit }}</td>
+                    <td align="center">
+                      
+
+                        <div ngbDropdown class="dropdown-primary">
+                            <button ngbDropdownToggle class="btn btn-primary btn-sm waves-effect waves-light " type="button">
+                                <i class="icofont icofont-listine-dots"></i>
+                            </button>
+                            <div ngbDropdownMenu>
+                              <a (click)="openModal(template, line)" class="dropdown-item waves-light waves-effect" href="javascript:">
+                                <i class="icofont icofont-ui-edit"></i> แก้ไข
+                              </a>
+                              <a (click)="del(line._id)" class="dropdown-item waves-light waves-effect" href="javascript:">
+                                <i class="icofont icofont-ui-close"></i> ลบ
+                              </a>
+                              
+                          </div>
+                        </div>
+                    </td>
+                  </tr>
+                  
+                </table>
+                <!-- pager -->
+                <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
+                    <li class="page-item" [ngClass]="{disabled:pager.currentPage === 1}">
+                        <a class="page-link" (click)="setPage(1)">First</a>
+                    </li>
+                    <li class="page-item"  [ngClass]="{disabled:pager.currentPage === 1}">
+                        <a class="page-link" (click)="setPage(pager.currentPage - 1)">Previous</a>
+                    </li>
+                    <li class="page-item" *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+                        <a class="page-link" (click)="setPage(page)">{{page}}</a>
+                    </li>
+                    <li class="page-item" [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                        <a class="page-link" (click)="setPage(pager.currentPage + 1)">Next</a>
+                    </li>
+                    <li class="page-item" [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                        <a class="page-link" (click)="setPage(pager.totalPages)">Last</a>
+                    </li>
+                </ul>
+              </div>
+        </app-card>
+
+        <!-- modal large-->
+        <ng-template #template>
+            <div class="modal-header">
+              <h4 class="modal-title pull-left">แก้ไขแจ้งปัญหาระบบ</h4>
+              <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <form name="form" (ngSubmit)="onSubmit()">
+            <div class="modal-body">
+
+                
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">รายการที่แจ้ง</label>
+                        <div class="col-sm-10">
+                        <select name="items" [(ngModel)]="model.items"  id="items" class="form-control form-control-info">                        
+                                    
+                        <option *ngFor="let line of selectArr; let i = index" [ngValue]="line">{{ line.name }} </option>
+                        </select>                    
+                    </div>
+                </div>
+                <div class="form-group row" >
+                        <label class="col-sm-2 col-form-label">วันที่เกิดเหตุการณ์</label>
+                        <div class="col-sm-10">
+                            <div class="form-group">
+                                <div class="input-group">
+                                        <input type="datetime-local" name="date" placeholder="yyyy-mm-dd"  class="form-control" id="date"  [(ngModel)]="model.date">
+                                        
+                                        
+                                </div>
+                            </div>      
+                            
+                                  
+                        </div>
+                    </div>
+
+              <div class="form-group row">
+                <label class="col-sm-2 col-form-label">เรื่อง</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="subject" name="subject" placeholder="เรื่อง"  [(ngModel)]="model.subject">
+                    
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">รายละเอียด</label>
+                <div class="col-sm-10">
+                  <textarea class="form-control" cols="50" rows="3" placeholder="รายละเอียดในการขอรับบริการ" [(ngModel)]="model.description" name="description"></textarea>
+                  
+                </div>
+            </div>
+
+            <div class="form-group row" >
+                <label class="col-sm-2 col-form-label">บันทึกการแก้ไข</label>
+                <div class="col-sm-10">
+                  <textarea class="form-control" cols="50" rows="3" placeholder="บันทึกการแก้ไข" [(ngModel)]="model.edit" name="edit"></textarea>
+                  
+                </div>
+            </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default waves-effect" (click)="modalRef.hide()">ยกเลิก</button>
+                <button type="submit" class="btn btn-primary waves-effect waves-light">บันทึก</button>
+              </div>
+            </form>
+        </ng-template>
+
+    </div>
+</div>

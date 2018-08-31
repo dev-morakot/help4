@@ -1,0 +1,22 @@
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { GroupsComponent } from './groups.component';
+
+const routes: Routes = [
+    {
+        path: '',
+        component: GroupsComponent,
+        data: {
+            title: 'ฝ่าย แผนก',
+            icon: 'icon-layers',
+            caption: 'ตั้งค่าข้อมูลฝ่าย / แผนกต่างๆ ในองค์กร',
+            status: true
+        }
+    }
+];
+
+@NgModule({
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule]
+})
+export class GroupsRoutingModule {}
