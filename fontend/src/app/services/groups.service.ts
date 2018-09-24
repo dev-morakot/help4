@@ -1,13 +1,17 @@
 import { Injectable } from '@angular/core';
-import { HttpClient,HttpHeaders, HttpRequest , HttpResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map'
 import 'rxjs/add/operator/catch';
 import { appConfig } from '../app.config';
-import { Group } from '../models/schema';
+import { Group } from '../models/res_groups';
+
 
 @Injectable()
 export class GroupsService {
+
+    group: Group[];
+
 
     constructor(private http: HttpClient) {}
 
@@ -18,39 +22,27 @@ export class GroupsService {
             });
     }
 
-    create(value: any) {
-        let data = {
-            group: value.group,
-            department: value.department
-        };
-        return this.http.post<Group[]>(appConfig.apiUrl + '/groups/insert', data)
+    create(group: Group) {
+       
+        return this.http.post<Group[]>(appConfig.apiUrl + '/groups/insert', group)
             .map( res => {
                 return res;
             });
     }
 
-    update(model: any) {
-        let obj = {
-            group: model.group,
-            department: model.department,
-            _id: model._id
-        };
-        return this.http.post<any>(appConfig.apiUrl + '/groups/update', obj)
+    update(group: Group) {
+        
+        return this.http.put<Group[]>(appConfig.apiUrl + '/groups/update/' + group._id, group)
             .map( res => {
                 return res;
             });
     }
 
-    delete(_id: string) {
+    delete(_id: Group) {
        
         return this.http.delete<any>(appConfig.apiUrl + '/groups/delete/' + _id)
             .map(data => {
                 return data;
             });
-    }
-
-    private handleError(error: Response) {
-        console.log(error);
-        return Observable.throw(error.json() || 'Server Error');
     }
 }

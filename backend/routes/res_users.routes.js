@@ -42,9 +42,9 @@ router.put('/location/update/:id', res_location.editLocation);
 router.delete('/location/delete/:id', res_location.deleteLocation);
 
 // res_groups
-router.get('/group/show', res_groups.getGroup);
-router.post('/group/insert', res_groups.createGroup);
-router.put('/group/update/:id', res_groups.editGroup);
-router.delete('/group/delete/:id', res_groups.deleteGroup);
+router.get('/groups/show', res_groups.getGroup);
+router.post('/groups/insert', res_groups.createGroup);
+router.put('/groups/update/:id', res_groups.editGroup);
+router.delete('/groups/delete/:id', res_groups.deleteGroup);
 
 module.exports = router;

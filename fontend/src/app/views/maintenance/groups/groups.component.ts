@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef, TemplateRef } from '@angular/core';
 import { HttpClient, HttpResponse, HttpHeaders, HttpRequest } from '@angular/common/http';
 
-import { Router, ActivatedRoute } from '@angular/router';
+
 import * as _ from 'underscore';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
@@ -11,7 +11,7 @@ import { FormControl, FormGroup, FormArray, Validators, FormsModule, FormBuilder
 import { GroupsService } from '../../../services/index';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
-import { appConfig } from '../../../app.config';
+
 
 @Component({
     selector: 'app-groups',
@@ -39,7 +39,6 @@ import { appConfig } from '../../../app.config';
     constructor(private http: HttpClient,
       private formBuilder: FormBuilder,
       private groupService: GroupsService,
-      private router: Router,
       private modalService: BsModalService){}
 
   ngOnInit(): void{
@@ -64,6 +63,7 @@ import { appConfig } from '../../../app.config';
   
 
   onInsert(){
+    console.log("onInsert", this.form.value);
     this.groupService.create(this.form.value)
       .subscribe(data=> {
         this.modalRef.hide();
@@ -77,7 +77,7 @@ import { appConfig } from '../../../app.config';
       });
   }
 
-  del(_id: string) {
+  del(_id) {
     this.groupService.delete(_id)
       .subscribe(data=> {
         this.onLoad();
