@@ -184,7 +184,7 @@ export class SupplierComponent implements OnInit {
         });
   }
 
-  del(_id: string) {
+  del(_id) {
     this.supplierService.delete(_id)
       .subscribe(data=> {
         this.onLoad();

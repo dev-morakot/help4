@@ -1,6 +1,17 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
+const groups = new Schema({
+    group: {
+        type: String,
+        required: true
+    },
+    department: {
+        type: String,
+        required: true
+    }
+});
+
 const ResUsersSchema = new Schema({
     firstname: {
         type: String,
@@ -27,7 +38,7 @@ const ResUsersSchema = new Schema({
         default: Date.now
     },
     active: {
-        type: Boolean
+        type: String
     },
     state: {
         type: String
@@ -37,7 +48,7 @@ const ResUsersSchema = new Schema({
         required: true
     },
     group: {
-        type: String,
+        type: groups,
         required: true
     }
 

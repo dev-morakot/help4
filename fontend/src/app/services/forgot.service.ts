@@ -11,7 +11,7 @@ export class ForgotService {
 
     forgot(email: string) {
         const data = {email: email};
-        return this.http.post<any>(appConfig.apiUrl + '/users/forgot', data)
+        return this.http.post<any>(appConfig.apiUrl + '/api/users/forgot', data)
             .map(res=> {
                 return res;
             });

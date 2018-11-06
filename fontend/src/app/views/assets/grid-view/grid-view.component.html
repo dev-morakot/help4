@@ -1,0 +1,171 @@
+<div class="row">
+    <div class="col-sm-12">
+        <app-card [title]="'รายการทะเบียนอุปกรณ์'" [headerContent]="'รายการลงทะเบียนอุปกรณ์อิเล็กทรอนิกส์  เพื่อบันทึกข้อมูลและแสดงรายการทั้งหมด'"  [blockClass]="'icon-btn'">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Service TAG - S/N</th>
+                            <th>Device Name</th>
+                            <th>Mac Address</th>
+                            <th>ประเภทอุปกรณ์</th>
+                            <th>ฝ่ายแผนก</th>
+                            <th>บริษัท</th>
+                            <th>สถานที่ตั้ง</th>
+                            <th>สถานะ</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let line of pagedItems; let i = index">
+                           <td scope="row">{{ i+1 }}</td>
+                           <td>{{ line.service_tag }}</td>
+                           <td>{{ line.device_name }}</td>
+                           <td>{{ line.mac_address }}</td>
+                           <td>{{ line.device_type.name }}</td> 
+                           <td>{{ line.groups.department }}</td>
+                           <td>{{ line.company }}</td>
+                           <td>{{ line.locations.name }}</td>
+                           <td>
+                               <span *ngIf="line.state === 'true'">ปกติ</span>
+                               <span *ngIf="line.state === 'false'">เครื่องเสีย</span>
+                           </td>
+                           <td align="center">
+                            <button mat-icon-button [matMenuTriggerFor]="menu">
+                                <mat-icon>more_vert</mat-icon>
+                            </button>
+                            <mat-menu #menu="matMenu">
+                                <button mat-menu-item (click)="openModal(template, line)">
+                                <mat-icon>create</mat-icon>
+                                <span>แก้ไข</span>
+                                </button>
+               
+                                <button mat-menu-item (click)="del(line._id)">
+                                <mat-icon>delete</mat-icon>
+                                <span>ลบ</span>
+                                </button>
+                            </mat-menu>
+    
+                           
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <!-- pager -->
+                <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
+                    <li class="page-item" [ngClass]="{disabled:pager.currentPage === 1}">
+                        <a class="page-link" (click)="setPage(1)">First</a>
+                    </li>
+                    <li class="page-item"  [ngClass]="{disabled:pager.currentPage === 1}">
+                        <a class="page-link" (click)="setPage(pager.currentPage - 1)">Previous</a>
+                    </li>
+                    <li class="page-item" *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+                        <a class="page-link" (click)="setPage(page)">{{page}}</a>
+                    </li>
+                    <li class="page-item" [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                        <a class="page-link" (click)="setPage(pager.currentPage + 1)">Next</a>
+                    </li>
+                    <li class="page-item" [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                        <a class="page-link" (click)="setPage(pager.totalPages)">Last</a>
+                    </li>
+                </ul>
+            </div>
+        </app-card>
+
+        <ng-template #template>
+            <div class="modal-header">
+              <h4 class="modal-title pull-left">แก้ไขทะเบียนอุปกรณ์</h4>
+              <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <form name="form" (ngSubmit)="onSubmit()">
+            <div class="modal-body">
+
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Service TAG - S/N</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="service_tag" [(ngModel)]="model.service_tag" name="service_tag">
+                                
+                    </div>
+                </div>
+        
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Mac Address</label>
+                    <div class="col-sm-10">
+                         <input type="text" class="form-control" id="mac_address" [(ngModel)]="model.mac_address" name="mac_address">
+                                  
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Device Name</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="device_name" [(ngModel)]="model.device_name" name="device_name"> 
+                                     
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">ประเภทอุปกรณ์</label>
+                    <div class="col-sm-10">
+                        <select name="device_type" [(ngModel)]="model.device_type" name="device_type" id="device_type" class="form-control form-control-info">                        
+                                    
+                            <option *ngFor="let line of equip" [ngValue]="line">{{ line.name }}</option>
+                        </select>                    
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">ฝ่ายแผนก</label>
+                    <div class="col-sm-10">
+                        <select name="groups" [(ngModel)]="model.groups" name="groups" id="groups" class="form-control form-control-info">                        
+                                    
+                            <option *ngFor="let line of group" [ngValue]="line">{{ line.group }} - {{ line.department }}</option>
+                        </select>                    
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">สถานที่ตั้ง</label>
+                    <div class="col-sm-10">
+                        <select name="locations" [(ngModel)]="model.locations" id="locations" name="locations" class="form-control form-control-info">                        
+                                    
+                            <option *ngFor="let line of locs" [ngValue]="line" [selected]="line">{{ line.name }}</option>
+                        </select>                    
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">ชื่อบริษัท</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="company" [(ngModel)]="model.company" name="company">
+                                   
+                    </div>
+                </div>
+
+                <div class="form-group row" >
+                    <label class="col-sm-2 col-form-label">หมายเหตุ</label>
+                    <div class="col-sm-10">
+                        <textarea class="form-control" cols="50" rows="3" placeholder="หมายเหตุ" [(ngModel)]="model.note" name="note"></textarea>
+                              
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">สถานะ</label>
+                    <div class="col-sm-10">
+                        <ui-switch class="js-large" color="#4680ff" switchColor="#fff" size="large" [(ngModel)]="model.state" name="state" checked></ui-switch>
+                            <span *ngIf="model.state === ''">เครื่องเสีย</span>
+                            <span *ngIf="model.state === true">ปกติ</span>
+                            <span *ngIf="model.state === false">เครื่องเสีย</span>
+                    </div>
+                </div>
+            
+            </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default waves-effect" (click)="modalRef.hide()">ยกเลิก</button>
+                    <button type="submit" class="btn btn-primary waves-effect waves-light">บันทึก</button>
+                </div>
+            </form>
+        </ng-template>
+    </div>
+</div>

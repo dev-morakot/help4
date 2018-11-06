@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpRequest, HttpResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
@@ -9,58 +9,34 @@ import { Supplier } from '../models/res_supplier';
 @Injectable()
 export class SupplierService {
 
+    supplier: Supplier[];
     constructor(private http: HttpClient){}
 
     all() {
-        return this.http.get<Supplier[]>(appConfig.apiUrl + '/supplier/all')
+        return this.http.get<Supplier[]>(appConfig.apiUrl + '/api/supplier/show')
             .map( res => {
                 return res;
             });
     }
 
-    create(value: any){
-        const json = {
-            name: value.name,
-            address: value.address,
-            subdistrict: value.subdistrict,
-            district: value.district,
-            province: value.province,
-            zipcode: value.zipcode,
-            tel: value.tel,
-            fax: value.fax,
-            email: value.email,
-            contact: value.contact,
-            note: value.note
-        };
-        return this.http.post<Supplier[]>(appConfig.apiUrl + '/supplier/insert', json)
+    create(supplier: Supplier){
+        
+        return this.http.post<Supplier[]>(appConfig.apiUrl + '/api/supplier/insert', supplier)
             .map(res=>{
                 return res;
             });
     }
 
-    update(model: any) {
-        let obj = {
-            name: model.name,
-            address: model.address,
-            subdistrict: model.subdistrict,
-            district: model.district,
-            province: model.province,
-            zipcode: model.zipcode,
-            tel: model.tel,
-            fax: model.fax,
-            email: model.email,
-            contact: model.contact,
-            note: model.note,
-            _id: model._id
-        };
-        return this.http.post<Supplier[]>(appConfig.apiUrl + '/supplier/update', obj)
+    update(supplier: Supplier) {
+        
+        return this.http.put<Supplier[]>(appConfig.apiUrl + '/api/supplier/update/' + supplier._id, supplier)
             .map(res=> {
                 return res;
             });
     }
 
-    delete(_id: string) {
-        return this.http.delete<any>(appConfig.apiUrl + '/supplier/delete/' + _id)
+    delete(_id: Supplier) {
+        return this.http.delete<any>(appConfig.apiUrl + '/api/supplier/delete/' + _id)
             .map( res=> {
                 return res;
             });

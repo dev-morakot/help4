@@ -2,30 +2,36 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/map';
 import { appConfig } from '../app.config';
-import { User } from '../models/index';
+import { Users } from '../models/res_users';
 
 @Injectable()
 export class UserService {
+
+    users: Users[];
     constructor(private http: HttpClient) { }
 
     getAll() {
-        return this.http.get<User[]>(appConfig.apiUrl + '/users');
+        return this.http.get<Users[]>(appConfig.apiUrl + '/api/res_users/index');
     }
 
-    getById(_id: string) {
-        return this.http.get(appConfig.apiUrl + '/users/' + _id);
+    findById(email: Users) {
+        return this.http.post<Users[]>(appConfig.apiUrl + '/api/res_users/find_by_id', email)
+            .map(res=> {
+                return res;
+            });
     }
 
-    create(user: User) {
-        return this.http.post(appConfig.apiUrl + '/users/register', user);
+
+    create(users: Users) {
+        return this.http.post<Users[]>(appConfig.apiUrl + '/api/res_users/form', users);
     }
 
-    update(user: User) {
-        return this.http.put(appConfig.apiUrl + '/users/' + user._id, user);
+    update(users: Users) {
+        return this.http.put<Users[]>(appConfig.apiUrl + '/api/res_users/update/' + users._id, users);
     }
 
-    delete(_id: string) {
-        return this.http.delete(appConfig.apiUrl + '/users/' + _id);
+    delete(_id: Users) {
+        return this.http.delete<any>(appConfig.apiUrl + '/api/res_users/delete/' + _id);
     }
     
 }

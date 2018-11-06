@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import 'hammerjs';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { FormsModule,ReactiveFormsModule }    from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 
@@ -18,8 +18,9 @@ import { LayoutComponent } from './main/layout/layout.component';
 
 import { AuthGuard } from './site/guards/index';
 import { JwtInterceptorProvider, ErrorInterceptorProvider } from './site/helpers/index';
-import { AuthenticationService,UserService,ForgotService,SystemService,PagerService, GroupsService,LocationService,EquipmentService, SupplierService} from './services/index';
+import { AuthenticationService,UserService,ForgotService,SystemService,PagerService, GroupsService,LocationService,EquipmentService, SupplierService, AssetsService, RequestService} from './services/index';
 import { dateFormatPipe } from './pipe/date-format-pipe';
+import { FilterPipe } from './pipe/filter.pipe';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { dateFormatPipe } from './pipe/date-format-pipe';
     LoginComponent,
     ForgotComponent,
     LayoutComponent,
-    dateFormatPipe
+    dateFormatPipe,
+    FilterPipe
   ],
   imports: [
     BrowserModule,
@@ -51,6 +53,8 @@ import { dateFormatPipe } from './pipe/date-format-pipe';
     SystemService,
     PagerService,
     GroupsService,
+    AssetsService,
+    RequestService,
     LocationService,EquipmentService,SupplierService],
   bootstrap: [AppComponent]
 })

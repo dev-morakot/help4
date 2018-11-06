@@ -16,7 +16,7 @@ export class GroupsService {
     constructor(private http: HttpClient) {}
 
     getAll() {
-        return this.http.get<Group[]>(appConfig.apiUrl + '/groups/show')
+        return this.http.get<Group[]>(appConfig.apiUrl + '/api/groups/show')
             .map(res=> {
                 return res;
             });
@@ -24,7 +24,7 @@ export class GroupsService {
 
     create(group: Group) {
        
-        return this.http.post<Group[]>(appConfig.apiUrl + '/groups/insert', group)
+        return this.http.post<Group[]>(appConfig.apiUrl + '/api/groups/insert', group)
             .map( res => {
                 return res;
             });
@@ -32,7 +32,7 @@ export class GroupsService {
 
     update(group: Group) {
         
-        return this.http.put<Group[]>(appConfig.apiUrl + '/groups/update/' + group._id, group)
+        return this.http.put<Group[]>(appConfig.apiUrl + '/api/groups/update/' + group._id, group)
             .map( res => {
                 return res;
             });
@@ -40,7 +40,7 @@ export class GroupsService {
 
     delete(_id: Group) {
        
-        return this.http.delete<any>(appConfig.apiUrl + '/groups/delete/' + _id)
+        return this.http.delete<any>(appConfig.apiUrl + '/api/0groups/delete/' + _id)
             .map(data => {
                 return data;
             });

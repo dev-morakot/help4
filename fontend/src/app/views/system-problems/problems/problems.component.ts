@@ -87,7 +87,7 @@ export class ProblemsComponent implements OnInit {
         this.loading = true;
        setTimeout(() => {
         this.cur_date = this.form.value.date;//this.myPipe.transform(this.form.value.date);
-        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        this.currentUser = JSON.parse(localStorage.getItem('fullname'));
            // if(this.form.valid) {
                 this.systemService.postProblem(this.form.value.items, this.cur_date, this.form.value.subject, this.form.value.edit, this.form.value.description, this.currentUser)
                 .subscribe(data => {

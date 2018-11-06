@@ -1,0 +1,286 @@
+<div class="row">
+    <div class="col-sm-12">
+        <app-card [blockClass]="'icon-btn'">
+            <div class="table-responsive">
+                <table class="table table-striped" style="margin-top: 15px">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Code</th>
+                            <th>ชื่อ - นามกสุล</th>                            
+                            <th>email</th>
+                            <th>บริษัท</th>
+                            <th>ฝ่าย/แผนก</th>
+                            <th>สถานะ</th>
+                            <th>Active</th>
+                            <th></th>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <th><input type="input" class="form-control" [(ngModel)]="searchText.code" /></th>
+                            <th><input type="input" class="form-control" [(ngModel)]="searchText.firstname" /></th>
+                            <th><input type="input" class="form-control" [(ngModel)]="searchText.email" /></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let line of result; let i = index | filter: searchText">
+                            <td>{{ i+1 }}</td>
+                            <td>{{ line.code }}</td>
+                            <td>{{ line.firstname }}  {{ line.lastname }}</td>                           
+                            <td>{{ line.email }}</td>
+                            <td>{{ line.company }}</td>
+                            <td>ฝ่าย: {{ line.group.group }}   แผนก: {{ line.group.department }}</td>
+                            <td>{{ line.state }}</td>
+                            <td>
+                                <span *ngIf="line.active === 'active'">
+                                    <mat-icon style='color: green;font-weight: bold'>done</mat-icon>
+                                </span>
+                                <span *ngIf="line.active === 'deactivate'">
+                                    <mat-icon style='color: red;font-weight: bold'>close</mat-icon>
+                                </span>
+                            </td>
+                            <td align="center">
+                                <button mat-icon-button [matMenuTriggerFor]="menu">
+                                    <mat-icon>more_vert</mat-icon>
+                                </button>
+                                <mat-menu #menu="matMenu">
+                                    <button mat-menu-item (click)="editModal(editLine, line)">
+                                        <mat-icon>create</mat-icon>
+                                        <span>แก้ไข</span>
+                                    </button>
+
+                                    <button mat-menu-item (click)="del(line._id)">
+                                        <mat-icon>delete</mat-icon>
+                                        <span>ลบ</span>
+                                    </button>
+
+                                </mat-menu>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </app-card>
+
+        <button mat-fab color="primary" class="app-fab--absolute" (click)="openModal(users)"><i class="icofont icofont-ui-edit"></i></button>
+
+
+        <!-- modal insert -->
+        <ng-template #users>
+            <div class="modal-header">
+                <h4 class="modal-title pull-left">เพิ่มรายการ</h4>
+                <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                        <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+             <form [formGroup]="form" name="form" (ngSubmit)="onInsert()">
+                <div class="modal-body">
+
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">รูปภาพ</label>
+                        <div class="col-sm-12">
+                            <input type="file" class="form-control" (change)="onFileChanged($event)" />
+                        </div>
+                    </div>
+
+                    <div class="form-group row" [ngClass]="displayFieldCss('code')">
+                        <label class="col-sm-4 col-form-label">รหัสพนักงาน</label>
+                        <div class="col-sm-12">
+                            <input type="text" class="form-control" formControlName="code" id="code" required />
+                            <app-field-error-display [displayError]="isFieldValid('code')" errorMsg="Please inform your code">
+                                </app-field-error-display>
+                        </div>
+                    </div>
+
+                    <div class="form-group row" [ngClass]="displayFieldCss('firstname')">
+                        <label class="col-sm-4 col-form-label">ชื่อ</label>
+                        <div class="col-sm-12">
+                            <input type="text" class="form-control" formControlName="firstname" id="firstname" required />
+                                <app-field-error-display [displayError]="isFieldValid('firstname')" errorMsg="Please inform your firstname">
+                                </app-field-error-display>
+                        </div>
+                    </div>
+
+                    <div class="form-group row" [ngClass]="displayFieldCss('lastname')">
+                        <label class="col-sm-4 col-form-label">นามสกุล</label>
+                        <div class="col-sm-12">
+                            <input type="text" class="form-control" formControlName="lastname" id="lastname" required />
+                                <app-field-error-display [displayError]="isFieldValid('lastname')" errorMsg="Please inform your lastname">
+                                </app-field-error-display>
+                        </div>
+                    </div>
+                   
+                    <div class="form-group row" [ngClass]="displayFieldCss('email')">
+                        <label class="col-sm-4 col-form-label">email</label>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" formControlName="email" id="email" required />
+                                <app-field-error-display [displayError]="isFieldValid('email')" errorMsg="Please inform your email">
+                                </app-field-error-display>
+                        </div>
+                    </div>
+
+                    <div class="form-group row" [ngClass]="displayFieldCss('lastname')">
+                        <label class="col-sm-4 col-form-label">Password</label>
+                        <div class="col-sm-12">
+                            <input type="password" class="form-control" formControlName="password" id="password" required />
+                                <app-field-error-display [displayError]="isFieldValid('password')" errorMsg="Please inform your password">
+                                </app-field-error-display>
+                        </div>
+                    </div>
+                    <div class="form-group row" [ngClass]="displayFieldCss('company')">
+                        <label class="col-sm-4 col-form-label">บริษัท</label>
+                        <div class="col-sm-12">
+                                <input type="text" class="form-control" formControlName="company" id="company" required />
+                                <app-field-error-display [displayError]="isFieldValid('company')" errorMsg="Please inform your company">
+                                </app-field-error-display>
+                        </div>
+                    </div>
+                    <div class="form-group row" [ngClass]="displayFieldCss('group')">
+                        <label class="col-sm-4 col-form-label">ฝ่าย/แผนก</label>
+                            <div class="col-sm-12">
+                                <select name="group" formControlName="group"  id="group" class="form-control form-control-info">                        
+                                            
+                                    <option *ngFor="let line of groups; let i = index" [ngValue]="line"> ฝ่าย: {{ line.group }} -  แผนก :{{ line.department }} </option>
+                                </select> 
+                                <app-field-error-display [displayError]="isFieldValid('group')" errorMsg="Please inform your group">
+                                </app-field-error-display>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">สถานะ</label>
+                            <div class="col-sm-12">
+                            <select name="state" formControlName="state"  id="state" class="form-control form-control-info">                        
+                                            
+                            <option *ngFor="let line of states; let i = index" [ngValue]="line.status">{{ line.name }} </option>
+                            </select>                    
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label"></label>
+                        <div class="col-sm-12">
+                                <div class="form-check form-check-inline">
+                                        <label class="form-check-label">
+                                          <input class="form-check-input" type="radio" name="active" id="active" value="active" formControlName="active"> Active
+                                        </label>
+                                      </div>
+                                <div class="form-check form-check-inline">
+                                        <label class="form-check-label">
+                                          <input class="form-check-input" type="radio" name="active" id="active" value="deactivate" formControlName="active"> Deactivate
+                                        </label>
+                                      </div>             
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default waves-effect" (click)="modalRef.hide()">ยกเลิก</button>
+                    <button type="submit"  class="btn btn-primary waves-effect waves-light">บันทึก</button>
+                </div>
+            </form>
+        </ng-template>
+
+        <!-- modal edit -->
+
+        <ng-template #editLine>
+                <div class="modal-header">
+                        <h4 class="modal-title pull-left">แก้ไขรายการ</h4>
+                        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form name="form" (ngSubmit)="onEdit()">
+                        <div class="modal-body">
+        
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label">รหัสพนักงาน</label>
+                                <div class="col-sm-12">
+                                    <input type="text" class="form-control" [(ngModel)]="model.code" name="code">
+                                </div>
+                            </div>
+    
+                            <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label">ชื่อ</label>
+                                    <div class="col-sm-12">
+                                        <input type="text" class="form-control" [(ngModel)]="model.firstname" name="firstname">
+                                    </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label">นามกสุล</label>
+                                <div class="col-sm-12">
+                                    <input type="text" class="form-control" [(ngModel)]="model.lastname" name="lastname">
+                                </div>
+                            </div>
+
+                            <!--<div class="form-group row">
+                                <label class="col-sm-4 col-form-label">username</label>
+                                <div class="col-sm-12">
+                                    <input type="text" class="form-control" [(ngModel)]="model.username" name="username">
+                                </div>
+                            </div>--->
+
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label">email</label>
+                                <div class="col-sm-12">
+                                    <input type="text" class="form-control" [(ngModel)]="model.email" name="email">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label">บริษัท</label>
+                                <div class="col-sm-12">
+                                    <input type="text" class="form-control" [(ngModel)]="model.company" name="company">
+                                </div>
+                            </div>
+
+
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label">ฝ่าย/แผนก</label>
+                                <div class="col-sm-12">
+                                    <select name="group" [(ngModel)]="model.group"  id="group" class="form-control form-control-info">                        
+                                            
+                                        <option *ngFor="let line of groups; let i = index" [ngValue]="line"> ฝ่าย: {{ line.group }} -  แผนก :{{ line.department }} </option>
+                                    </select> 
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label">สถานะ</label>
+                                <div class="col-sm-12">
+                                    <select name="state" [(ngModel)]="model.state"  id="state" class="form-control form-control-info">                        
+                                            
+                                        <option *ngFor="let line of states; let i = index" [ngValue]="line.status">{{ line.name }} </option>
+                                        </select>  
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label">สถานะ</label>
+                                <div class="col-sm-12">
+                                    <div class="form-check form-check-inline">
+                                        <label class="form-check-label">
+                                          <input class="form-check-input" type="radio" [(ngModel)]="model.active" name="active" id="active" value="active"> Active
+                                        </label>
+                                      </div>
+                                    <div class="form-check form-check-inline">
+                                        <label class="form-check-label">
+                                          <input class="form-check-input" type="radio" [(ngModel)]="model.active" name="active" id="active" value="deactivate"> Deactivate
+                                        </label>
+                                      </div>      
+                                </div>
+                            </div>
+        
+                        </div>
+                        <div class="modal-footer">
+                                <button type="button" class="btn btn-default waves-effect" (click)="modalRef.hide()">ยกเลิก</button>
+                                <button type="submit" class="btn btn-primary waves-effect waves-light">บันทึก</button>
+                        </div>
+                </form>
+        </ng-template>
+
+    </div>
+</div>

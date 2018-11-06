@@ -25,14 +25,14 @@ export class SystemService {
     }
 
     // system_problem
-    postProblem(items: string, date: string, subject: string, edit: string,description: string, currenetUser: string) {
+    postProblem(items: string, date: string, subject: string, edit: string,description: string, currentUser: string) {
         var data = {
             items: items,
             date: date,
             subject: subject,
             edit: edit,
             description: description,
-            currenetUser: currenetUser
+            currentUser: currentUser
         };
         return this.http.post<any>(this.URL_API + '/api/system/insert', data)
             .map( res => {

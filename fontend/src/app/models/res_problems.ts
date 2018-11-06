@@ -1,7 +1,7 @@
 
 export class ResProblems {
 
-    constructor(_id = '', items = '', date = '', subject = '', edit = '', description = '', name = '') {
+    constructor(_id = '', items = '', date = '', subject = '', edit = '', description = '', name = '', currenetUser = '') {
         this._id = _id;
         this.items = items;
         this.date = date;
@@ -9,6 +9,7 @@ export class ResProblems {
         this.edit = edit;
         this.description = description;
         this.name = name;
+        this.currenetUser = currenetUser;
     }
 
     _id: string;
@@ -18,4 +19,5 @@ export class ResProblems {
     edit: string;
     description: string;
     name: string;
+    currenetUser: string;
 };

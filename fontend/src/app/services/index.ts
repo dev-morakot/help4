@@ -7,3 +7,5 @@ export * from './groups.service';
 export * from './location.service';
 export * from './equipment.service';
 export * from './supplier.service';
+export * from './assets.service';
+export * from './request.service';

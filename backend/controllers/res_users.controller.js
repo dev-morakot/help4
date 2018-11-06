@@ -12,6 +12,13 @@ usersCtrl.Authenticate = async (req, res) => {
    
 };
 
+usersCtrl.userFindById = async (req , res) => {
+    const a = await ResUsers.findOne({'email': new RegExp(req.body.email, 'i')}, function (err, docs) {
+        res.json(docs);
+    });
+    
+};
+
 usersCtrl.getResUsers = async (req, res) => {
     const users = await ResUsers.find();
     res.json(users);
@@ -32,7 +39,7 @@ usersCtrl.editResUsers = async (req, res) => {
     const { id } = req.params;
     const users = {
         firstname: req.body.firstname,
-        lastname: req.body.lastname,
+        lastname: req.body.lastname,        
         email: req.body.email,
         password: req.body.password,
         code: req.body.code,

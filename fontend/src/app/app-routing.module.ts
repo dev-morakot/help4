@@ -35,6 +35,14 @@ const routes: Routes = [
         path: 'maintenance',
         loadChildren: './views/maintenance/maintenance.module#MaintenanceModule'
       },
+      {
+        path: 'resource',
+        loadChildren: './views/resource/resource.module#ResourceModule'
+      },
+      {
+        path: 'assets',
+        loadChildren: './views/assets/assets.module#AssetsModule'
+      },
     ]
   },
   /*{

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {animate, AUTO_STYLE, state, style, transition, trigger} from '@angular/animations';
 import {MenuItems} from '../../shared/menu-items/menu-items';
 
+import { UserService } from '../../services/index';
+
 @Component({
   selector: 'app-layout',
   templateUrl: './layout.component.html',
@@ -119,7 +121,7 @@ export class LayoutComponent implements OnInit {
 
   public config: any;
 
-  constructor(public menuItems: MenuItems) {
+  constructor(public menuItems: MenuItems, private userService: UserService) {
     this.navType = 'st2';
     this.themeLayout = 'vertical';
     this.verticalPlacement = 'left';

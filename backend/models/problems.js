@@ -21,6 +21,9 @@ const ProblemsSchema = new Schema({
     },
     name: {
         type: String
+    },
+    currentUser: {
+        type: String
     }
 });
 

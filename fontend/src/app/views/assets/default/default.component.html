@@ -1,0 +1,107 @@
+<div class="row">
+    <div class="col-sm-12">
+
+        <app-card [blockClass]="'icon-btn'">
+            <form [formGroup]="form" name="form" (ngSubmit)="onSubmit()">
+                <div class="form-group row" [ngClass]="displayFieldCss('service_tag')">
+                    <label class="col-sm-2 col-form-label">Service TAG - S/N</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="service_tag" formControlName="service_tag">
+                        <app-field-error-display [displayError]="isFieldValid('service_tag')" errorMsg="Please inform your service tag">
+                        </app-field-error-display>
+                    </div>
+                </div>
+
+                <div class="form-group row" [ngClass]="displayFieldCss('mac_address')">
+                    <label class="col-sm-2 col-form-label">Mac Address</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="mac_address" formControlName="mac_address">
+                            <app-field-error-display [displayError]="isFieldValid('mac_address')" errorMsg="Please inform your mac address">
+                            </app-field-error-display>
+                    </div>
+                </div>
+                <div class="form-group row" [ngClass]="displayFieldCss('device_name')">
+                        <label class="col-sm-2 col-form-label">Device Name</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="device_name" formControlName="device_name">
+                                <app-field-error-display [displayError]="isFieldValid('device_name')" errorMsg="Please inform your device name">
+                                </app-field-error-display>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">ประเภทอุปกรณ์</label>
+                        <div class="col-sm-10">
+                            <select name="device_type" formControlName="device_type" id="device_type" class="form-control form-control-info">                        
+                                
+                                <option *ngFor="let line of equip" [ngValue]="line">{{ line.name }}</option>
+                            </select>                    
+                    </div>
+                </div>
+                <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">ฝ่ายแผนก</label>
+                        <div class="col-sm-10">
+                            <select name="groups" formControlName="groups" id="groups" class="form-control form-control-info">                        
+                                
+                                <option *ngFor="let line of groups" [ngValue]="line">{{ line.group }} - {{ line.department }}</option>
+                            </select>                    
+                    </div>
+                </div>
+                <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">สถานที่ตั้ง</label>
+                        <div class="col-sm-10">
+                            <select name="locations" formControlName="locations" id="locations" class="form-control form-control-info">                        
+                                
+                                <option *ngFor="let line of locations" [ngValue]="line">{{ line.name }}</option>
+                            </select>                    
+                    </div>
+                </div>
+
+                <div class="form-group row" [ngClass]="displayFieldCss('company')">
+                        <label class="col-sm-2 col-form-label">ชื่อบริษัท</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="company" formControlName="company">
+                                <app-field-error-display [displayError]="isFieldValid('company')" errorMsg="Please inform your company name">
+                                </app-field-error-display>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">หมายเหตุ</label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control" id="note" formControlName="note" rows="3"></textarea>
+                                
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">สถานะ</label>
+                    <div class="col-sm-10">
+                            <ui-switch class="js-large" color="#4680ff" switchColor="#fff" size="large" formControlName="state" checked></ui-switch>
+                            <span *ngIf="form.value.state === ''">เครื่องเสีย</span>
+                            <span *ngIf="form.value.state === true">ปกติ</span>
+                            <span *ngIf="form.value.state === false">เครื่องเสีย</span>
+                    </div>
+                </div>
+
+                
+                <div class="form-group row">
+                    <label class="col-sm-2"></label>
+                    <div class="col-sm-10">
+                          <button type="submit" [disabled]="!form.valid || loading" class="btn btn-primary m-b-0">บันทึก</button>
+                          <button type="button" class="btn btn-default m-b-0" (click)="reset()">ยกเลิก</button>
+                          
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2"></label>
+                    <div class="col-sm-10">
+                        <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+                    </div>
+                </div>
+                
+            </form>
+
+        </app-card>
+    </div>
+</div>

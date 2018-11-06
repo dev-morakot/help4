@@ -3,6 +3,8 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import 'hammerjs';
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
+import { FilterPipe } from './app/pipe/filter.pipe';
+import { FormsModule } from '@angular/forms';
 
 if (environment.production) {
   enableProdMode();

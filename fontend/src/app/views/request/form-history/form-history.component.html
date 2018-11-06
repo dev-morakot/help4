@@ -1,0 +1,53 @@
+<div class="row">
+    <div class="col-sm-12">
+        <app-card [title]="" [blockClass]="'icon-btn'">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th style="text-align: center">Transaction ID</th>
+                            <th style="text-align: center">ประเภทอุปกรณ์</th>
+                            <th style="text-align: center">เรื่อง</th>
+                            <th style="text-align: center">รายละเอียด</th>
+                            <th style="text-align: center">หมายเหตุ</th>
+                            <th style="text-align: center">ผู้แจ้ง</th>
+                            <th style="text-align: center">สถานะ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <!-- pager -->
+                <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
+                    <li class="page-item" [ngClass]="{disabled:pager.currentPage === 1}">
+                        <a class="page-link" (click)="setPage(1)">First</a>
+                    </li>
+                    <li class="page-item"  [ngClass]="{disabled:pager.currentPage === 1}">
+                        <a class="page-link" (click)="setPage(pager.currentPage - 1)">Previous</a>
+                    </li>
+                    <li class="page-item" *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+                        <a class="page-link" (click)="setPage(page)">{{page}}</a>
+                    </li>
+                    <li class="page-item" [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                        <a class="page-link" (click)="setPage(pager.currentPage + 1)">Next</a>
+                    </li>
+                    <li class="page-item" [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                        <a class="page-link" (click)="setPage(pager.totalPages)">Last</a>
+                    </li>
+                </ul>
+
+
+
+            </div>
+        </app-card>
+    </div>
+</div>

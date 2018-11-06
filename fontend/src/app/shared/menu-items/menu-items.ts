@@ -54,13 +54,29 @@ const MENUITEMS = [
             name: 'ฟอร์มแจ้งข้อมูล'
           },
           {
-            state: 'data',
+            state: 'history',
             name: 'ประวัติแจ้งรับบริการ'
           },
+          
+        ]
+      },
+      {
+        state: 'request',
+        short_label: 'R',
+        name: 'รับซ่อม/ตรวจสอบ',
+        type: 'sub',
+        icon: 'icon-view-grid',
+      
+        children: [
           {
-            state: 'chart',
-            name: 'ลำดับคิวบริการ'
-          }
+            state: 'validation',
+            name: 'รอซ่อม'
+          },
+          {
+            state: 'form-\history',
+            name: 'ปิดงานซ่อม'
+          },
+          
         ]
       }
     ],
@@ -70,11 +86,21 @@ const MENUITEMS = [
     label: 'ลงทะเบียนอุปกรณ์',
     main: [
       {
-        state: 'ยกเลิก',
+        state: 'assets',
         short_label: 'A',
         name: 'ทะเบียนอุปกรณ์',
-        type: 'link',
-        icon: 'icon-reload rotate-refresh'
+        type: 'sub',
+        icon: 'icon-reload rotate-refresh',
+        children: [
+          {
+            state: 'default',
+            name: 'ฟอร์มกรอกข้อมูล'
+          },
+          {
+            state: 'grid-view',
+            name: 'รายการทะเบียนอุปกรณ์'
+          }
+        ]
       }
     ]
   },
@@ -144,7 +170,7 @@ const MENUITEMS = [
   {
     label: 'ตั้งค่าระบบ',
     main: [
-      {
+     /* {
         state: 'auth',
         short_label: 'A',
         name: 'Authentication',
@@ -209,7 +235,7 @@ const MENUITEMS = [
             target: true
           },
         ]
-      },
+      },*/
       {
         state: 'maintenance',
         short_label: 'A',
@@ -241,19 +267,16 @@ const MENUITEMS = [
         ]
       },
       {
-        state: 'user',
+        state: 'resource',
         short_label: 'U',
-        name: 'User Profile',
+        name: 'ผู้ใช้งานระบบ',
         type: 'sub',
         icon: 'icon-user',
         children: [
           {
-            state: 'profile',
+            state: 'users',
             name: 'User Profile'
-          }, {
-            state: 'card',
-            name: 'User Card'
-          }
+          },
         ]
       }
     ]
